@@ -1,0 +1,32 @@
+syntax = "proto3";
+import "google/api/annotations.proto";
+
+// You can ignore these for now
+//option java_multiple_files = true;
+//option java_package = "example-digestor.resource.grpc.digestor";
+//option java_outer_classname = "DigestorProto";
+//option objc_class_prefix = "DIGEST";
+
+package digestor;
+
+service Digestor{
+ rpc GetDigestor(DigestMessage) returns (DigestedMessage) {}
+}
+
+service DigestorRest {
+  rpc GetDigestor(DigestMessage) returns (DigestedMessage) {
+    option (google.api.http) = {
+      post: "/v1/digest"
+      body: "*"
+    };
+  }
+}
+
+message DigestMessage{
+ string ToDigest = 1;
+}
+
+message DigestedMessage{
+ string Digested = 1;
+ bool WasDigested = 2;
+}
